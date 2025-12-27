@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>YES OR NO?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="card">
+    <img id="catImage"
+      src="https://www.boredpanda.com/blog/wp-content/uploads/2025/10/funny-cat-memes-go-hard-cover_675.jpg" alt="cat">
+
+    <h2 id="text">Will you be my only one?? 💖</h2>
+
+    <div class="buttons">
+      <button class="yes" onclick="yesClick()">Yes</button>
+      <button class="no" onclick="noClick()">No</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
+
+<style>
+    body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#fd79b2, #ffd1d1);
+    font-family: cursive;
+}
+
+.card {
+    text-align: center;
+    background: rgb(255, 243, 243);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 200px;
+    border-radius: 12px;
+}
+
+h2 {
+    color: rgb(255, 111, 183);
+}
+
+.buttons {
+    margin-top: 15px;
+}
+
+button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.yes {
+    background: #4CAF50;
+    color: white;
+}
+
+.no {
+    background: #f44336;
+    color: white;
+    margin-left: 10px;
+}
+</style>
+
+<script>
+    // Telegram Bot Configuration - REPLACE WITH YOUR VALUES
+    const TELEGRAM_BOT_TOKEN = '8395561497:AAGY3g1XPVxr_QGv0Pb7LielmaYK5RpG-YY'; // Replace with your bot token
+    const TELEGRAM_CHAT_ID = '7301310227'; // Replace with your chat ID
+    
+    const data = [
+    {
+        img: "https://www.boredpanda.com/blog/wp-content/uploads/2025/10/funny-cat-memes-go-hard-cover_675.jpg",
+        text: "Will you be my only one?? 💖"
+    },
+    {
+        img: "https://cdn-useast1.kapwing.com/static/templates/crying-cat-meme-template-thumbnail-4e806a85.webp",
+        text: "Are you sure? 🥺"
+    },
+    {
+        img: "https://i.pinimg.com/736x/e9/f6/36/e9f63675fa85770c13c3d726f3313a37.jpg",
+        text: "Please say yes 😭💔"
+    },
+    {
+
+        img: "https://i.ibb.co/990nbB4R/IMG-20251227-150456-367.jpg",
+        text: "Why 😔"
+    },
+    {
+
+        img: "https://i.ibb.co/tMDKQ6Tp/IMG-20251227-150459-016.jpg",
+        text: "Don't say no pls☹️"
+    },
+    {
+
+        img: "https://i.ibb.co/zTdpvM4Z/IMG-20251227-150503-427.jpg",
+        text: "I'm so sad😔"
+    },
+    {
+
+        img: "https://i.ibb.co/DPbJFRWg/IMG-20251227-150506-070.jpg",
+        text: "Oh No You still say NO☹️"
+    },
+
+];
+
+// Image and text for Yes button
+const yesImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4aNJVjgDnCEm_LnPfBUZehYnYX4k5zUvE3g&s"; // <-- new image for Yes
+
+let index = 0;
+
+// Function to send message to Telegram
+function sendToTelegram(message) {
+    // Only send if tokens are configured
+    if (TELEGRAM_BOT_TOKEN !== 'YOUR_BOT_TOKEN_HERE' && TELEGRAM_CHAT_ID !== 'YOUR_CHAT_ID_HERE') {
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Message sent to Telegram:', data);
+        })
+        .catch(error => {
+            console.error('Error sending to Telegram:', error);
+        });
+    }
+}
+
+function noClick() {
+    index++;
+    if (index >= data.length) {
+        index = 0;
+    }
+
+    document.getElementById("catImage").src = data[index].img;
+    document.getElementById("text").innerText = data[index].text;
+    
+    // Send message to Telegram when No is clicked
+    sendToTelegram(`❌ User clicked NO at stage: ${index + 1} - ${data[index].text}`);
+}
+
+function yesClick() {
+    document.getElementById("text").innerText = "Yay!!! I love you 💕🥰";
+    document.getElementById("catImage").src = yesImage; // <-- change image here
+    
+    // Send message to Telegram when Yes is clicked
+    sendToTelegram('✅ User clicked YES! They said: Yay!!! I love you 💕🥰');
+}
+</script>
